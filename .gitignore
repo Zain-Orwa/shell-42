@@ -1,0 +1,13 @@
+# Ignore backup, temp, and log files
+*~
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Mac system files
+.DS_Store
+
+# Shell testing directories
+tmp/
+out/
