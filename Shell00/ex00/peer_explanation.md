@@ -130,9 +130,9 @@ Z$
 
 | Method | Command                         | Allowed | Notes                       |
 | :----- | :------------------------------ | :------ | :-------------------------- |
-| 1      | `echo "Z" > z`                  | ✅       | Fastest and clean           |
-| 2      | `cat > z` → type `Z` → `Ctrl+D` | ✅       | Official 42-friendly way    |
-| 3      | `echo` + verify with `cat -e`   | ✅       | Ensures newline correctness |
+| 1      | `echo "Z" > z`                    |    ✅   | Fastest and clean           |
+| 2      | `cat > z` → type `Z` → `Ctrl+D`       |    ✅   | Official 42-friendly way    |
+| 3      | `echo` + verify with `cat -e`       |    ✅   | Ensures newline correctness |
 
 ---
 
