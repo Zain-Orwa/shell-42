@@ -1,21 +1,3 @@
-Ahh, I see what’s happening 👀 — great question, and it’s not your fault.
-GitHub’s Markdown viewer **doesn’t render all HTML or CSS styles** — especially things like:
-
-* `align="center"` (GitHub strips this out)
-* `<h1> ... </h1>` when mixed with Markdown formatting
-* custom font sizes, colors, and layout formatting
-
-So, even though it looks perfect here, **GitHub sanitizes** the HTML to prevent layout-breaking code.
-That’s why it shows as plain text instead of that nice “dark structured layout” like your screenshot.
-
-But don’t worry — I can fix that for you **so it looks exactly like the dark GitHub style you liked**, using *pure Markdown* (no stripped HTML).
-The trick is to use GitHub’s **native syntax** for headings, code blocks, and emojis, while keeping the alignment and hierarchy clear.
-
-Here’s the same README rewritten for **100% correct rendering inside GitHub**, and it’ll look just like your working `ex00` one 👇
-
----
-
-````markdown
 # 💠 Shell00 — Exercise 01 : `testShell00.tar`
 
 > **Target:** Make a file named `testShell00` whose **permissions, size, and timestamp** match the example in the subject, and then archive it as `testShell00.tar`.
