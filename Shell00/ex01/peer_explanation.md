@@ -32,201 +32,160 @@ These are day-one survival tools. If you can shape a file’s metadata directly 
 - **Use:**  
   ```bash
   touch testShell00
-````
 
-* **Timestamp flag:**
 
-  ```bash
-  touch -t [[CC]YY]MMDDhhmm[.ss] testShell00
-  ```
+Timestamp flag:
 
-  Example → `touch -t 202006012342 testShell00` sets **Jun 1 23:42, 2020**.
-  *If the date is more than ~6 months old, `ls -l` will show the **year** instead of the time — totally fine for this exercise.*
+touch -t [[CC]YY]MMDDhhmm[.ss] testShell00
 
----
 
-### 2) `truncate`
+Example → touch -t 202006012342 testShell00 sets Jun 1 23:42, 2020.
+If the date is more than ~6 months old, ls -l will show the year instead of the time — totally fine for this exercise.
 
-* **Why:** set the file to an exact **byte size** without editing.
-* **Flag:**
+2) truncate
 
-  ```bash
-  truncate -s 40 testShell00
-  ```
+Why: set the file to an exact byte size without editing.
 
-  `-s 40` → the file becomes exactly **40 bytes** long.
+Flag:
 
----
+truncate -s 40 testShell00
 
-### 3) `chmod`
 
-Before diving in — watch or read one of these if you need a full understanding of **file permissions** 🔑:
+-s 40 → the file becomes exactly 40 bytes long.
 
-🎥 **Video explanation:** [Go watch my video about file permissions](https://www.youtube.com/channel/UCYjjQTGH4AIYQZg1qWb5r1g)
-📘 **Prefer reading?** [Read here about Linux permissions](https://www.infowester.com/linuxpermissoes.php)
+3) chmod
 
----
+Before diving in — watch or read one of these if you need a full understanding of file permissions 🔑:
 
-* **Why:** set **permissions** quickly with **octal codes.**
-* **Use:**
+🎥 Video explanation: Go watch my video about file permissions
 
-  ```bash
-  chmod 455 testShell00
-  ```
+📘 Prefer reading? Read here about Linux permissions
 
-  Octal → `4 5 5` corresponds to **`-r--r-xr-x`**
+Why: set permissions quickly with octal codes.
 
-| Role   | Bit | Meaning        | Result |
-| :----- | :-- | :------------- | :----- |
-| Owner  | 4   | read only      | `r--`    |
-| Group  | 5   | read + execute | `r-x`    |
-| Others | 5   | read + execute | `r-x`    |
+Use:
 
-> Reminder: `r=4`, `w=2`, `x=1` → add them to get your permission numbers.
+chmod 455 testShell00
 
----
 
-### 4) `ls`, `cat`, `stat` (for verification)
+Octal → 4 5 5 corresponds to -r--r-xr-x
 
-* Long listing:
+Role	Bit	Meaning	Result
+Owner	4	read only	r--
+Group	5	read + execute	r-x
+Others	5	read + execute	r-x
 
-  ```bash
-  ls -l testShell00
-  ```
+Reminder: r=4, w=2, x=1 → add them to get your permission numbers.
 
-  Expected shape:
+4) ls, cat, stat (for verification)
 
-  ```
-  -r--r-xr-x 1 <user> <group> 40 Jun  1 23:42 testShell00
-  ```
+Long listing:
 
-  (Your `<user>` and `<group>` will be your real ones — don’t worry about `XX`.)
+ls -l testShell00
 
-* Check exact details:
 
-  ```bash
-  stat -c '%A %h %U %G %s %y %n' testShell00
-  ```
+Expected shape:
 
-  → shows permissions, size, owner, and timestamp in one line.
+-r--r-xr-x 1 <user> <group> 40 Jun  1 23:42 testShell00
 
----
 
-### 5) `tar`
+(Your <user> and <group> will be your real ones — don’t worry about XX.)
 
-* **Why:** package files for submission.
-* **Command:**
+Check exact details:
 
-  ```bash
-  tar -cf testShell00.tar testShell00
-  ```
+stat -c '%A %h %U %G %s %y %n' testShell00
 
-  * `c` → create
-  * `f` → specify filename
-    The resulting archive will contain your correctly configured file.
+
+→ shows permissions, size, owner, and timestamp in one line.
+
+5) tar
+
+Why: package files for submission.
+
+Command:
+
+tar -cf testShell00.tar testShell00
+
+
+c → create
+
+f → specify filename
+The resulting archive will contain your correctly configured file.
 
 Optional:
 
-```bash
 tar -tvf testShell00.tar   # list contents
 tar -xvf testShell00.tar   # extract contents (for testing)
-```
 
----
+🪜 Step-by-Step Solution (inside ex01/)
 
-## 🪜 **Step-by-Step Solution (inside `ex01/`)**
+1️⃣ Create the file
 
-1️⃣ **Create the file**
-
-```bash
 touch testShell00
-```
 
-2️⃣ **Set its size to 40 bytes**
 
-```bash
+2️⃣ Set its size to 40 bytes
+
 truncate -s 40 testShell00
-```
 
-3️⃣ **Give it the right permissions**
 
-```bash
+3️⃣ Give it the right permissions
+
 chmod 455 testShell00
-```
 
-4️⃣ **Set its modification time to “Jun 1 23:42”**
 
-```bash
+4️⃣ Set its modification time to “Jun 1 23:42”
+
 touch -t 202006012342 testShell00
-```
 
-> If `ls -l` shows a year instead of the time, it’s still correct.
 
-5️⃣ **Verify your work**
+If ls -l shows a year instead of the time, it’s still correct.
 
-```bash
+5️⃣ Verify your work
+
 ls -l testShell00
 # Expect: -r--r-xr-x 1 <user> <group> 40 Jun  1 23:42 testShell00
-```
 
-6️⃣ **Create your submission archive**
 
-```bash
+6️⃣ Create your submission archive
+
 tar -cf testShell00.tar testShell00
-```
 
-7️⃣ **(Optional) Check archive**
 
-```bash
+7️⃣ (Optional) Check archive
+
 tar -tvf testShell00.tar
-```
 
----
-
-## ⚡ **One-liner Recap**
-
-```bash
+⚡ One-liner Recap
 touch testShell00
 truncate -s 40 testShell00
 chmod 455 testShell00
 touch -t 202006012342 testShell00
 tar -cf testShell00.tar testShell00
-```
 
----
-
-## 🧾 **Expected `ls -l` Output**
-
-```
+🧾 Expected ls -l Output
 -r--r-xr-x 1 <user> <group> 40 Jun  1 23:42 testShell00
-```
+
 
 ✅ 40 bytes
 ✅ Correct permissions
 ✅ Timestamp OK (or shows year)
-✅ Archived in `testShell00.tar`
+✅ Archived in testShell00.tar
 
----
+⚠️ Common Mistakes
 
-## ⚠️ **Common Mistakes**
-
-🚫 Forgetting to set permissions **after** file creation
-🚫 Wrong order (last `touch -t` ensures the correct mtime)
+🚫 Forgetting to set permissions after file creation
+🚫 Wrong order (last touch -t ensures the correct mtime)
 🚫 Editing the file manually (changes timestamp)
-🚫 Trying to fake `XX XX` — they represent your real user/group
+🚫 Trying to fake XX XX — they represent your real user/group
 
----
-
-## 🧩 **Alternative “GitHub Method”**
-
-```bash
+🧩 Alternative “GitHub Method”
 touch testShell00
 truncate -s 40 testShell00
 touch -t 202006012342 testShell00
 chmod 455 testShell00
 tar -cf testShell00.tar testShell00
 # Optional: tar -xvf testShell00.tar
-```
 
-Same result — just ensure your **final timestamp** is correct.
 
+Same result — just ensure your final timestamp is correct.
