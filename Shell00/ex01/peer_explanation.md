@@ -1,191 +1,247 @@
-<h1 align="center">💠 Shell00 — Exercise 01 : <code>testShell00.tar</code></h1>
+Ahh, I see what’s happening 👀 — great question, and it’s not your fault.
+GitHub’s Markdown viewer **doesn’t render all HTML or CSS styles** — especially things like:
 
-> **Target:** make a file named `testShell00` whose **permissions, size, and timestamp** produce an `ls -l` line like the subject’s example, then package it as `testShell00.tar`.
+* `align="center"` (GitHub strips this out)
+* `<h1> ... </h1>` when mixed with Markdown formatting
+* custom font sizes, colors, and layout formatting
+
+So, even though it looks perfect here, **GitHub sanitizes** the HTML to prevent layout-breaking code.
+That’s why it shows as plain text instead of that nice “dark structured layout” like your screenshot.
+
+But don’t worry — I can fix that for you **so it looks exactly like the dark GitHub style you liked**, using *pure Markdown* (no stripped HTML).
+The trick is to use GitHub’s **native syntax** for headings, code blocks, and emojis, while keeping the alignment and hierarchy clear.
+
+Here’s the same README rewritten for **100% correct rendering inside GitHub**, and it’ll look just like your working `ex00` one 👇
 
 ---
 
-## 🎯 **Objective**
+````markdown
+# 💠 Shell00 — Exercise 01 : `testShell00.tar`
+
+> **Target:** Make a file named `testShell00` whose **permissions, size, and timestamp** match the example in the subject, and then archive it as `testShell00.tar`.
+
+---
+
+## 🎯 Objective
 
 You’ll practice three core UNIX skills:
 
-1. **Create files** and set their **size** without using an editor.  
-2. Control a file’s **permissions** precisely (numeric/octal mode).  
-3. Set a file’s **modification time** and **archive** it with `tar`.
-
-These are day-one survival tools. If you can shape a file’s metadata directly from the shell, you’re already thinking like the OS.
+1. **Create files** and set their **size** without editing.
+2. Precisely control a file’s **permissions**.
+3. Modify a file’s **timestamp** and **archive** it with `tar`.
 
 ---
 
-## 🧠 **What You’ll Learn**
+## 🧠 What You’ll Learn
 
-✅ How to create and modify files directly from the terminal  
-✅ How to set file size, permissions, and timestamps  
-✅ How to verify with `ls -l` and package using `tar`  
-✅ How to interpret each part of a file’s attribute line  
+- How to create and modify files directly from the shell  
+- How to use `chmod`, `truncate`, and `touch` properly  
+- How to verify attributes with `ls -l`  
+- How to package files for submission with `tar`
 
 ---
 
-## 🧰 **Command Toolbox (with flags & purpose)**
+## 🧰 Command Toolbox (with flags & purpose)
 
-### 1) `touch`
-- **Why:** create an empty file or update timestamps.  
-- **Use:**  
-  ```bash
-  touch testShell00
+### `touch`
+📌 **Purpose:** Create an empty file or update its timestamp.
 
+```bash
+touch testShell00
+````
 
-Timestamp flag:
+⏱️ **Timestamp flag:**
 
+```bash
 touch -t [[CC]YY]MMDDhhmm[.ss] testShell00
+```
 
+Example:
 
-Example → touch -t 202006012342 testShell00 sets Jun 1 23:42, 2020.
-If the date is more than ~6 months old, ls -l will show the year instead of the time — totally fine for this exercise.
+```bash
+touch -t 202006012342 testShell00
+```
 
-2) truncate
+This sets the modification time to **Jun 1, 23:42 (2020)**.
 
-Why: set the file to an exact byte size without editing.
+> If it’s an older date, GitHub’s shell may show the **year** instead of the time — this is OK per the exercise instructions.
 
-Flag:
+---
 
+### `truncate`
+
+📌 **Purpose:** Set the file size in bytes without editing it.
+
+```bash
 truncate -s 40 testShell00
+```
 
+`-s 40` → file size will be exactly **40 bytes**.
 
--s 40 → the file becomes exactly 40 bytes long.
+---
 
-3) chmod
+### `chmod`
 
-Before diving in — watch or read one of these if you need a full understanding of file permissions 🔑:
+📌 **Purpose:** Change file permissions (who can read, write, or execute).
 
-🎥 Video explanation: Go watch my video about file permissions
+Before diving deeper —
+🎥 [Watch my video about file permissions and how they work](https://www.youtube.com/channel/UCYjjQTGH4AIYQZg1qWb5r1g)
+📘 [Prefer reading? Here’s a detailed guide](https://www.infowester.com/linuxpermissoes.php)
 
-📘 Prefer reading? Read here about Linux permissions
+Now the command:
 
-Why: set permissions quickly with octal codes.
-
-Use:
-
+```bash
 chmod 455 testShell00
+```
 
+**Breakdown of 455:**
 
-Octal → 4 5 5 corresponds to -r--r-xr-x
+| Role   | Octal | Meaning        | Result |
+| ------ | ----- | -------------- | ------ |
+| Owner  | 4     | read only      | `r--`  |
+| Group  | 5     | read + execute | `r-x`  |
+| Others | 5     | read + execute | `r-x`  |
 
-Role	Bit	Meaning	Result
-Owner	4	read only	r--
-Group	5	read + execute	r-x
-Others	5	read + execute	r-x
+Final permission:
 
-Reminder: r=4, w=2, x=1 → add them to get your permission numbers.
+```
+-r--r-xr-x
+```
 
-4) ls, cat, stat (for verification)
+---
 
-Long listing:
+### `ls`, `cat`, and `stat` (for verification)
 
+Check details:
+
+```bash
 ls -l testShell00
+```
 
+Expected output:
 
-Expected shape:
-
+```
 -r--r-xr-x 1 <user> <group> 40 Jun  1 23:42 testShell00
+```
 
+Inspect attributes in detail:
 
-(Your <user> and <group> will be your real ones — don’t worry about XX.)
-
-Check exact details:
-
+```bash
 stat -c '%A %h %U %G %s %y %n' testShell00
+```
 
+---
 
-→ shows permissions, size, owner, and timestamp in one line.
+### `tar`
 
-5) tar
+📦 **Purpose:** Create the `.tar` archive to submit.
 
-Why: package files for submission.
+Create:
 
-Command:
-
+```bash
 tar -cf testShell00.tar testShell00
+```
 
+List contents:
 
-c → create
+```bash
+tar -tvf testShell00.tar
+```
 
-f → specify filename
-The resulting archive will contain your correctly configured file.
+Extract (optional for testing):
 
-Optional:
+```bash
+tar -xvf testShell00.tar
+```
 
-tar -tvf testShell00.tar   # list contents
-tar -xvf testShell00.tar   # extract contents (for testing)
+---
 
-🪜 Step-by-Step Solution (inside ex01/)
+## 🪜 Step-by-Step Solution (inside `ex01/`)
 
 1️⃣ Create the file
 
+```bash
 touch testShell00
+```
 
+2️⃣ Set the file size
 
-2️⃣ Set its size to 40 bytes
-
+```bash
 truncate -s 40 testShell00
+```
 
+3️⃣ Set the permissions
 
-3️⃣ Give it the right permissions
-
+```bash
 chmod 455 testShell00
+```
 
+4️⃣ Set the modification time
 
-4️⃣ Set its modification time to “Jun 1 23:42”
-
+```bash
 touch -t 202006012342 testShell00
+```
 
+5️⃣ Verify
 
-If ls -l shows a year instead of the time, it’s still correct.
-
-5️⃣ Verify your work
-
+```bash
 ls -l testShell00
-# Expect: -r--r-xr-x 1 <user> <group> 40 Jun  1 23:42 testShell00
+```
 
+6️⃣ Create the archive
 
-6️⃣ Create your submission archive
-
+```bash
 tar -cf testShell00.tar testShell00
+```
 
+7️⃣ (Optional) Verify archive
 
-7️⃣ (Optional) Check archive
-
+```bash
 tar -tvf testShell00.tar
+```
 
-⚡ One-liner Recap
-touch testShell00
-truncate -s 40 testShell00
-chmod 455 testShell00
-touch -t 202006012342 testShell00
-tar -cf testShell00.tar testShell00
+---
 
-🧾 Expected ls -l Output
+## ✅ Quick Recap (One-liner)
+
+```bash
+touch testShell00 && truncate -s 40 testShell00 && chmod 455 testShell00 && touch -t 202006012342 testShell00 && tar -cf testShell00.tar testShell00
+```
+
+---
+
+## 🧾 Expected Output
+
+```
 -r--r-xr-x 1 <user> <group> 40 Jun  1 23:42 testShell00
+```
 
-
-✅ 40 bytes
 ✅ Correct permissions
-✅ Timestamp OK (or shows year)
-✅ Archived in testShell00.tar
+✅ 40 bytes
+✅ Right timestamp (or year)
+✅ Archived in `testShell00.tar`
 
-⚠️ Common Mistakes
+---
 
-🚫 Forgetting to set permissions after file creation
-🚫 Wrong order (last touch -t ensures the correct mtime)
-🚫 Editing the file manually (changes timestamp)
-🚫 Trying to fake XX XX — they represent your real user/group
+## ⚠️ Common Mistakes
 
-🧩 Alternative “GitHub Method”
+🚫 Changing file after setting timestamp
+🚫 Wrong permission order (chmod after last touch is safest)
+🚫 Trying to fake `XX` values (those are placeholders)
+🚫 Using the wrong octal permission (must be `455`)
+
+---
+
+## 🧩 GitHub Example Method
+
+```bash
 touch testShell00
 truncate -s 40 testShell00
 touch -t 202006012342 testShell00
 chmod 455 testShell00
 tar -cf testShell00.tar testShell00
-# Optional: tar -xvf testShell00.tar
+```
 
+Same result — just make sure the **timestamp** remains correct.
 
-Same result — just ensure your final timestamp is correct.
+#########################################################.
