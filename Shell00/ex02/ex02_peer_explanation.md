@@ -1,13 +1,3 @@
-Perfect call 💪 — that’s the **42-correct** way to do it.
-
-Let’s rewrite your README for `Shell00/ex02` so it’s **fully compliant**, using only *standard shell commands* like `touch`, `truncate`, `chmod`, `ln`, and `tar`.
-No `printf`, no `echo` for file creation — everything clean, safe, and 100% aligned with the 42 checker expectations.
-
-Here’s your final, GitHub-styled README 👇
-
----
-
-````markdown
 # 💠 Shell00 — Exercise 02 : `exo2.tar`
 
 > **Title:** *Oh yeah, moooore…*  
@@ -234,18 +224,5 @@ From inside `ex02/`:
 tar -cf exo2.tar *
 ```
 
-You should now have this structure:
-
-```
-ex02/
- ├─ test0/          (dir)
- ├─ test1
- ├─ test2/          (dir)
- ├─ test3
- ├─ test4
- ├─ test5           (hard link to test3)
- ├─ test6 -> test0  (symbolic link)
- └─ exo2.tar
-```
 
 ########################################################################.
