@@ -148,17 +148,18 @@ ln test3 test5       # hard link
 ln -s test0 test6    # symbolic link
 
 # 5. Set permissions
-chmod 751 test0      # drwx--xr-x
-chmod 644 test1      # -rw-r--r--
-chmod 555 test2      # dr-xr-xr-x (or chmod 444 test2 if required)
-chmod 444 test3 test4
+chmod 715 test0      
+chmod 714 test1     
+chmod 504 test2
+chmod 404 test3 
+chmod 641 test4
 # test5 inherits from test3
 
 # 6. Set timestamps
 touch -t 202006012047 test0
 touch -t 202006012146 test1
 touch -t 202006012245 test2
-touch -t 202006012343 test3
+touch -t 202006012344 test3
 touch -t 202006012343 test4
 touch -t 202006012344 test5
 touch -t 202006012220 test6
@@ -170,7 +171,6 @@ stat -c '%A %h %U %G %s %y %n' *
 # 8. Create the archive
 tar -cf exo2.tar *
 ```
-
 ---
 
 ## 📋 Expected `ls -l` Output
@@ -178,14 +178,13 @@ tar -cf exo2.tar *
 It should look like this (except user/group names):
 
 ```
-drwx--xr-x 2 XX XX Jun  1 20:47 test0
--rw-r--r-- 1 XX XX 4  Jun  1 21:46 test1
-dr-xr-xr-x 2 XX XX    Jun  1 22:45 test2
--r--r--r-- 2 XX XX 1  Jun  1 23:43 test3
--r--r--r-- 1 XX XX 2  Jun  1 23:43 test4
--r--r--r-- 2 XX XX 1  Jun  1 23:44 test5
-lrwxrwxrwx 1 XX XX 5  Jun  1 22:20 test6 -> test0
-```
+drwx--xr-x 2 XX XX XX Jun 1 20:47 test0
+-rwx--xr-- 1 XX XX 4 Jun 1 21:46 test1
+dr-x---r-- 2 XX XX XX Jun 1 22:45 test2
+-r-----r-- 2 XX XX 1 Jun 1 23:44 test3
+-rw-r----x 1 XX XX 2 Jun 1 23:43 test4
+-r-----r-- 2 XX XX 1 Jun 1 23:44 test5
+lrwxr-xr-x 1 XX XX 5 Jun 1 22:20 test6 -> test0
 
 ✔️ All link counts, sizes, and times must match
 ✔️ The year display instead of time is accepted
@@ -197,12 +196,12 @@ lrwxrwxrwx 1 XX XX 5  Jun  1 22:20 test6 -> test0
 | Requirement  | File  | Command to Check     | Expected           |
 | ------------ | ----- | -------------------- | ------------------ |
 | Directory    | test0 | `ls -ld test0`       | drwx--xr-x         |
-| Regular file | test1 | `ls -l test1`        | -rw-r--r-- size 4  |
-| Directory    | test2 | `ls -ld test2`       | dr-xr-xr-x         |
-| Regular file | test3 | `ls -l test3`        | -r--r--r-- size 1  |
-| Regular file | test4 | `ls -l test4`        | -r--r--r-- size 2  |
+| Regular file | test1 | `ls -l test1`        | -rwx--xr-- size 4  |
+| Directory    | test2 | `ls -ld test2`       | dr-x---r--         |
+| Regular file | test3 | `ls -l test3`        | -r-----r-- size 1  |
+| Regular file | test4 | `ls -l test4`        | -rw-r----x size 2  |
 | Hard link    | test5 | `ls -li test3 test5` | Same inode number  |
-| Symlink      | test6 | `ls -l test6`        | lrwxrwxrwx → test0 |
+| Symlink      | test6 | `ls -l test6`        | lrwxr-xr-x → test0 |
 
 ---
 
