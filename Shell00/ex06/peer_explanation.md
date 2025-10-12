@@ -1,8 +1,3 @@
-Perfect — here’s your **final `README.md`** for `ex06/git_ignore.sh`, formatted for **GitHub dark mode** and written in the same professional 42 Vienna style as your previous exercises.
-It includes the **purpose**, **commands**, and now the full **real-world explanation** of what those ignored files mean and why they matter.
-
----
-
 ````markdown
 # 🧩 Exercise 06 — gitignore
 
