@@ -103,7 +103,7 @@ ex03: added count_files.sh — count all files and directories recursively
 | Concept            | Command  | Meaning                      |                             |
 | ------------------ | -------- | ---------------------------- | --------------------------- |
 | Search recursively | `find .` | start from current directory |                             |
-| Combine processes  | `        | `                            | send output to next command |
+| Combine processes  | `  \|   | `                            | send output to next command |
 | Count results      | `wc -l`  | number of lines (items)      |                             |
 
 ---
