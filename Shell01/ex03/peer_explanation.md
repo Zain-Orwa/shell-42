@@ -20,7 +20,7 @@ find . | wc -l
 | Command  | Function | Description                                                        |                                         |
 | -------- | -------- | ------------------------------------------------------------------ | --------------------------------------- |
 | `find .` | Search   | Lists everything (files + dirs) from current directory recursively |                                         |
-| `        | `        | Pipe                                                               | Sends `find` output to the next command |
+| `      \| `        | Pipe                                                               | Sends `find` output to the next command |
 | `wc -l`  | Count    | Counts how many lines were output (each = one file or directory)   |                                         |
 
 ---
