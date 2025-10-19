@@ -2,13 +2,10 @@
 
 
 ```markdown
-<div align="center">
 
 # 🧩 **Exercise 05 — Can You Create It?**
 ### 🧠 Understanding how to handle *special characters* in filenames.
-</div>
 
----
 
 ## 🎯 **Objective**
 Create a file named:
@@ -35,7 +32,7 @@ This challenge teaches you:
 We need to make a file whose name includes the following *special characters*:
 ```
 
-? $ * ' " \
+ "\?$*'
 
 ````
 Each of these has meaning to Bash — for example:
@@ -81,10 +78,10 @@ with contents:
 | ------------ | ------------------------------------------------------ |
 | `cat >`      | Creates or overwrites a file and waits for user input. |
 | `\"`         | Escapes the opening double quote.                      |
-| `\?`       | Produces a literal `\?` at the start of the filename.  |
-| `\\`         | Produces one scape character when we type two.         |
+| `\?`         | Produces a literal `\?` at the start of the filename.  |
+| `\\`         | Produces one scape character '\'   when we type two.   |
 | `\$`         | Keeps `$` literal instead of variable expansion.       |
-| `*`          | Interpreted literally inside quotes.                   |
+| `\*`         | Interpreted literally inside quotes.                   |
 | `\'MaRViN\'` | Embeds `'MaRViN'` inside the filename.                 |
 ---
 
@@ -104,19 +101,6 @@ Example Output:
 
 ---
 
-## ⚙️ **Alternate Short Command**
-
-If escaping feels complex, use this simpler two-step version:
-
-```bash
-touch "\?$*'MaRViN'*$?\"" && echo 42 > "\?$*'MaRViN'*$?\""
-```
-
-✅ `touch` creates the file.
-✅ `echo` writes `42` into it safely.
-
----
-
 ## 🧩 **Deep Dive — Escaping Rules Recap**
 
 | Type                     | Example | Explanation                                  |
@@ -130,74 +114,11 @@ touch "\?$*'MaRViN'*$?\"" && echo 42 > "\?$*'MaRViN'*$?\""
 
 ---
 
-## 🧩 **Visual Breakdown — How Bash Interprets Escapes**
-
-Let’s see how your command transforms step by step 👇
-
-### 🧱 Raw Command (typed in terminal)
-
-```bash
-cat > "\"\\\?$*'MaRViN'*$?\\\""
-```
-
----
-
-### 🔍 Step-by-Step Interpretation
-
-| Stage                              | What Bash Sees            | Description                                   |
-| ---------------------------------- | ------------------------- | --------------------------------------------- |
-| **1️⃣ Raw input**                  | `\"\\\?$*'MaRViN'*$?\\\"` | You type this literally.                      |
-| **2️⃣ After first escape parsing** | `"\\?$*'MaRViN'*$?\\"`    | Quotes and `?` are protected.                 |
-| **3️⃣ After final evaluation**     | `"\?$*'MaRViN'*$?\"`      | `\\` becomes `\`. This is the real filename.  |
-| **4️⃣ Final file created**         | → `"\?$*'MaRViN'*$?\"`    | Exactly this string exists in your directory. |
-
----
-
-### 🔎 Visual Flow Diagram
-
-```text
-┌──────────────────────────────────────────────────────────┐
-│ You type in terminal:                                   │
-│  cat > "\"\\\?$*'MaRViN'*$?\\\""                         │
-└──────────────────────────────────────────────────────────┘
-                 │
-                 ▼
-  Bash parses escapes (\\ → \, \" → ")
-                 │
-                 ▼
-┌──────────────────────────────────────────────────────────┐
-│ Bash creates a file literally named:                    │
-│  "\?$*'MaRViN'*$?\"                                     │
-└──────────────────────────────────────────────────────────┘
-                 │
-                 ▼
-  You type file contents → `42`
-                 │
-                 ▼
-┌──────────────────────────────────────────────────────────┐
-│ File now exists with 2 bytes:                            │
-│  4  2                                                    │
-└──────────────────────────────────────────────────────────┘
-```
-
----
-
 ### 🧠 **Key Lesson**
 
 > Every layer of quotes or backslashes exists **only to protect** special symbols from the shell’s interpretation.
 > When Bash finishes parsing, what remains is the literal name that gets written to disk.
 
-✅ **Final on Disk:**
-
-```
-"\?$*'MaRViN'*$?\"
-```
-
-✅ **Contains:**
-
-```
-42
-```
 
 ---
 
@@ -246,12 +167,4 @@ Ctrl + D (x2)                      # Save and exit
 > Once you can read this chain of escapes, you truly understand how Bash sees your input.
 
 ---
-
-<div align="center">
-
-✨ *Escaping isn’t just syntax — it’s shell mastery.
-Once you can tame the backslash, you can command the terminal itself.* ⚡
-
-</div>
-```
 
