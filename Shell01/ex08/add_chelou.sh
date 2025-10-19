@@ -3,7 +3,7 @@
 # To test locally, uncomment FT_NBR1 and FT_NBR2.
 # Keep them commented when submitting.
 
-#-------------Teste 1
+### Teste 1 ###
 #str1="\'?"
 #str2='"\"'
 #str3="'"
@@ -11,7 +11,7 @@
 #FT_NBR1=$str1$str2$str3$str4
 #FT_NBR2=rcrdmddd
 
-#-------------Teste 2
+### Teste 2 ###
 #excl="!"
 #barraspas='\"\"'
 #FT_NBR1=$barraspas$excl$barraspas$excl$barraspas$excl$barraspas$excl$barraspas$excl$barraspas
