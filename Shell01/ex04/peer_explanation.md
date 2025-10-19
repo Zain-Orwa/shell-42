@@ -139,11 +139,6 @@ ip link | grep -o -E '([[:xdigit:]]{2}:){5}[[:xdigit:]]{2}'
 ex04: added MAC.sh — extract MAC addresses using regex and ifconfig
 ```
 
-````
-
----
-
-## 🧠 `peer_explanation.md` (short version for GitHub)
 
 ```markdown
 # 💡 ex04 — `MAC.sh`
@@ -325,3 +320,221 @@ b8:27:eb:45:12:ff
 ```
 ex04: fixed MAC.sh for macOS — added awk-based solution to avoid netmask matches
 ```
+
+
+Perfect — here’s your **Bonus Extension for Exercise 04: “Extract IP Addresses”**, formatted exactly like your previous exercises (`README.md` + `peer_explanation.md`).
+This can go into `Shell01/ex04/bonus/` or just below the MAC part in the same directory.
+
+---
+
+## 🧾 **README.md** — Bonus: Extract IP Addresses
+
+````markdown
+# 🌐 Exercise 04 — Bonus: Extract IP Addresses
+
+### 🎯 Objective
+In this bonus version, we’ll extend the original `MAC.sh` concept to extract your machine’s **IPv4 addresses** using regular expressions.
+
+---
+
+## 💻 Final Script
+
+```bash
+#!/bin/bash
+ifconfig | grep -o -E '([0-9]{1,3}\.){3}[0-9]{1,3}'
+````
+
+---
+
+## ⚙️ Step-by-Step Explanation
+
+### 1️⃣ `ifconfig`
+
+Displays network configuration — including interface names, IPs, MACs, and broadcast details.
+We’ll filter its output to only display **IPv4 addresses**.
+
+Example:
+
+```
+inet 192.168.1.5  netmask 255.255.255.0  broadcast 192.168.1.255
+inet 127.0.0.1  netmask 255.0.0.0
+```
+
+---
+
+### 2️⃣ `|` (Pipe)
+
+Sends all text output from `ifconfig` into the `grep` command.
+`grep` will then search for text patterns matching IP addresses.
+
+---
+
+### 3️⃣ `grep -o -E`
+
+| Flag | Meaning                                             |
+| ---- | --------------------------------------------------- |
+| `-E` | Use **extended regular expressions** (E = extended) |
+| `-o` | Output only the matching part, not the full line    |
+
+---
+
+### 4️⃣ Regular Expression Breakdown
+
+```bash
+([0-9]{1,3}\.){3}[0-9]{1,3}
+```
+
+| Expression          | Meaning                                                            | Example Match    |
+| ------------------- | ------------------------------------------------------------------ | ---------------- |
+| `[0-9]{1,3}`        | Match 1–3 digits                                                   | `192`, `10`, `0` |
+| `\.`                | A literal dot (escaped because `.` normally matches any character) | `.`              |
+| `([0-9]{1,3}\.){3}` | Repeat “digit + dot” three times                                   | `192.168.1.`     |
+| `[0-9]{1,3}`        | The final block of digits                                          | `5`              |
+
+✅ Matches → `192.168.1.5`
+✅ Matches → `10.0.0.12`
+❌ Doesn’t match → `999.999.999.999` (invalid but pattern-safe)
+
+---
+
+## 📊 Example Output
+
+```bash
+$ ./IP.sh
+127.0.0.1
+192.168.1.5
+10.0.0.12
+```
+
+Each address is displayed neatly on its own line.
+
+---
+
+## 🧠 Bonus: Using `ip addr` (modern systems)
+
+Some Linux systems have deprecated `ifconfig`.
+You can use `ip addr` instead:
+
+```bash
+ip addr | grep -o -E 'inet ([0-9]{1,3}\.){3}[0-9]{1,3}' | cut -d' ' -f2
+```
+
+| Command              | Purpose                                            |
+| -------------------- | -------------------------------------------------- |
+| `ip addr`            | Displays IPs for all interfaces                    |
+| `grep -E 'inet ...'` | Matches IPv4 addresses                             |
+| `cut -d' ' -f2`      | Cuts the “inet” prefix and prints only the address |
+
+---
+
+## 📘 Why this Works
+
+✅ **Regex** isolates numerical IPv4 format
+✅ **Pipe** redirects output flow cleanly
+✅ **grep -o** ensures each address appears on its own line
+
+This combination mirrors the logic used in your `MAC.sh`, but focuses on numeric dot-separated patterns.
+
+---
+
+## 💬 Peer Notes
+
+> Think of this as the IP version of `MAC.sh`.
+> Both rely on `ifconfig`, but each uses a unique regular expression pattern:
+>
+> • `MAC.sh` → `([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}`
+> • `IP.sh` → `([0-9]{1,3}\.){3}[0-9]{1,3}`
+>
+> Together, they form a great reference pair for pattern-based system scanning.
+
+---
+
+✅ **Commit Message Suggestion**
+
+```
+ex04_bonus: added IP.sh — extract IPv4 addresses using regex and ifconfig
+```
+
+````
+
+---
+
+## 🧩 **peer_explanation.md** — short version
+
+```markdown
+# 💡 ex04 Bonus — `IP.sh`
+
+### 🎯 Goal
+Extract and print all IPv4 addresses from your system — one per line.
+
+---
+
+### 💻 Final Script
+```bash
+#!/bin/bash
+ifconfig | grep -o -E '([0-9]{1,3}\.){3}[0-9]{1,3}'
+````
+
+---
+
+### ⚙️ Command Breakdown
+
+| Command                       | Description                     |
+| ----------------------------- | ------------------------------- |
+| `ifconfig`                    | Lists all interface details     |
+| `grep -o -E`                  | Extracts matching patterns only |
+| `([0-9]{1,3}\.){3}[0-9]{1,3}` | Regex for IPv4 format           |
+
+---
+
+### 🧩 Regex Explained
+
+| Pattern            | Meaning               |
+| ------------------ | --------------------- |
+| `[0-9]{1,3}`       | Match 1–3 digits      |
+| `\.`               | Dot between IP blocks |
+| `{3}`              | Repeat 3 times        |
+| Final `[0-9]{1,3}` | Last block of digits  |
+
+✅ Matches → `192.168.0.10`
+✅ Matches → `10.0.0.1`
+
+---
+
+### 🧪 Example Output
+
+```
+$ ./IP.sh
+127.0.0.1
+192.168.1.5
+```
+
+---
+
+### 🧠 Bonus Tip
+
+On modern systems:
+
+```bash
+ip addr | grep -o -E 'inet ([0-9]{1,3}\.){3}[0-9]{1,3}' | cut -d' ' -f2
+```
+
+---
+
+### 🧭 Recap
+
+| Concept           | Command    |
+| ----------------- | ---------- |
+| Network info      | `ifconfig` |
+| Filter data       | `grep -E`  |
+| Output match only | `-o`       |
+| Regex             | IP pattern |
+
+---
+
+✅ **Commit Example**
+
+✨ *Now you can extract both MAC and IP addresses cleanly using regex power.*
+
+```
+
