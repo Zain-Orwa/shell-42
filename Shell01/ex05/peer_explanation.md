@@ -168,3 +168,63 @@ Ctrl + D (x2)                      # Save and exit
 
 ---
 
+#why this command written in this way?
+
+```bash
+ls -lRa *MaRV* | cat -e
+```
+
+**Breakdown:**
+
+1. **`*MaRV*` (shell glob)**
+
+   * The **shell expands this *before* `ls` runs**.
+   * `*` matches **any sequence of characters** (including quotes, backslashes, `$`, `?`, `*`, etc.).
+   * So any filename whose name **contains the substring `MaRV`** will be substituted into the command line.
+   * Your weird file is named:
+
+     ```
+     "\?$*'MaRViN'*$?\"
+     ```
+
+     which **contains** `MaRV`, so the glob becomes:
+
+     ```bash
+     ls -lRa "\?$*'MaRViN'*$?\"    # <- after expansion by the shell
+     ```
+
+2. **`ls -lRa` (long, recursive, all)**
+
+   * `-l`  → long listing (mode, links, owner, size, date, name)
+   * `-R`  → recursive (descend into directories)
+   * `-a`  → include hidden entries (`.` files)
+   * `ls` simply prints the entry it was given by the shell after expansion.
+
+3. **`| cat -e` (visualize line ends)**
+
+   * Piping to `cat -e` prints a **`$` at end-of-line**, so graders can see there’s **exactly one newline** and no hidden characters.
+   * It also makes certain non-printing characters visible; useful for checking the output precisely against the subject PDF.
+
+### Why the “strange” name still matches
+
+* Globbing is **pattern matching**, not regex, and it’s done by the **shell**, not by `ls`.
+* The `*` wildcard matches everything **except a leading `.`** (unless you enable `dotglob`).
+* Special characters **in the filename** don’t stop the match; they’re just characters.
+* Since your filename contains `MaRV`, `*MaRV*` matches it, the shell substitutes the full, escaped path, and `ls` prints it.
+
+### If you wanted to match it *exactly*
+
+Use a fully quoted / escaped literal:
+
+```bash
+ls -l -- "\"\\\?$*'MaRViN'*$?\\\""
+```
+
+(or much easier: hit **Tab** to let your shell auto-escape the path)
+
+### TL;DR
+
+* `*MaRV*` expands to your file because it **contains** “MaRV”.
+* `ls -lRa` shows the long listing of the expanded path.
+* `cat -e` adds a trailing `$` so you can **see the newline** and verify the output exactly like in the PDF.
+
